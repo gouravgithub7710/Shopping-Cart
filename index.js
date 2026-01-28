@@ -11,10 +11,17 @@ const port = 3000
 connectDb()
 
 app.use(express.json())
+// app.use(cors({
+//     origin:[process.env.ORIGIN,'https://shopping-cart-gourav.vercel.app'],
+//     credentials:true
+// }))
+
 app.use(cors({
-    origin:[process.env.ORIGIN,'https://shopping-cart-gourav.vercel.app'],
-    credentials:true
+  origin: true,
+  credentials: true
 }))
+
+
 app.use(cookieParser())
 
 app.use("/api/auth",authRouter)
@@ -29,3 +36,4 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 
 })
+
