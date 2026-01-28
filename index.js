@@ -12,7 +12,7 @@ connectDb()
 
 app.use(express.json())
 app.use(cors({
-    origin:[process.env.ORIGIN,'https://shopping-cart-mern-yo9j.vercel.app'],
+    origin:[process.env.ORIGIN,'https://shopping-cart-gourav.vercel.app'],
     credentials:true
 }))
 app.use(cookieParser())
@@ -27,4 +27,5 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
+
 })
