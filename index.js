@@ -6,7 +6,7 @@ const authRouter = require('./routes/authRoutes')
 const connectDb = require('./config/db')
 const cartRouter = require('./routes/cartRoutes')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 connectDb()
 
@@ -36,4 +36,8 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 
 })
+
+
+
+
 
