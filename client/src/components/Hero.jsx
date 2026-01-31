@@ -9,7 +9,7 @@ const Hero = () => {
                     <h1 className=" sm:text-4xl text-3xl mb-4 font-bold">
                         Welcome To Shopping Cart </h1>
                     <p className="mb-8 leading-relaxed">
-                        At our online store, we offer a wide range of high-quality products to meet your shopping needs. Whether you're looking for fashion, electronics, home appliances, or any other item, we have it all covered.
+                        At our online store, we offer a wide range of high-quality products to meet your shopping needs. Whether you're looking for fashion, electronics, home appliances, or any other item, we have it all covered..
                     </p>
                     <div className="flex justify-center">
                         <Link className="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg" to={"/cart"}>
