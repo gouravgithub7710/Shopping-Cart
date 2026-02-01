@@ -9,6 +9,8 @@ const Register = () => {
     email: "",
     password: ""
   }
+  
+const [image, setImage] = useState(null)
 
   const [formData, setFormData] = useState(initialData)
   const [loading, setLoading] = useState(false)
@@ -25,23 +27,37 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+   
+    if (!image) {
+  toast.error("Please select profile image")
+  setLoading(false)
+  return
+}
 
     try {
       setLoading(true)
+
+    const dataToSend = new FormData()
+    dataToSend.append("name", formData.name)
+    dataToSend.append("email", formData.email)
+    dataToSend.append("password", formData.password)
+    dataToSend.append("image", image) 
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/auth/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        body: dataToSend,
+        // headers: {
+        //   "Content-Type": "application/json"
+        // },
         credentials: 'include',
-        body: JSON.stringify(formData)
+        // body: JSON.stringify(formData)
       })
 
       const data = await res.json()
 
+
       if (data.success) {
         setFormData(initialData)
+          setImage(null)
         toast.success(data.message)
         navigate("/login")
       } else {
@@ -70,7 +86,7 @@ const Register = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className='space-y-6'>
+          <form onSubmit={handleSubmit} encType="multipart/form-data" className='space-y-6'>
 
             {/* Name Field */}
             <div className='relative'>
@@ -129,6 +145,17 @@ const Register = () => {
                 {showPassword ? <EyeOff className='h-5 w-5' /> : <Eye className='h-5 w-5' />}
               </button>
             </div>
+
+          {/* Image Upload */}
+          <div className='relative'>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className='w-full py-3 px-4 bg-white/10 border border-gray-300 rounded-xl'
+            />
+          </div>
+
 
             {/* Register Button */}
             <button

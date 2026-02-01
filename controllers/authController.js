@@ -4,7 +4,11 @@ const jwt = require('jsonwebtoken')
 
 const register = async(req,res) =>{
     try{
-        const {name,email,password} = req.body;
+        // const {name,email,password} = req.body;
+        const { name, email, password } = req.body;
+
+   const image = req.file?.filename ? `/uploads/${req.file.filename}` : "";
+
 
         if(!name || !email || !password){
             return res.status(400).json({
@@ -23,11 +27,19 @@ const register = async(req,res) =>{
 
         const hashedPassword = await bcrypt.hash(password,10)
 
-        const newUser = new User({
-            name,
-            email,
-            password:hashedPassword
-        })
+        // const newUser = new User({
+        //     name,
+        //     email,
+        //     password:hashedPassword
+        // })
+
+             const newUser = new User({
+                name,
+                email,
+                password: hashedPassword,
+                image: image || undefined
+                })
+
 
         await newUser.save()
 
@@ -76,7 +88,7 @@ const login = async(req,res) =>{
         res.cookie('token',token,{
             httpOnly:true,
             secure:true,
-            sameSite:'none',
+            sameSite: 'none',
             expires:new Date(Date.now()+3600000)
         })
        
@@ -93,6 +105,54 @@ const login = async(req,res) =>{
         })
     }
 }
+
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.id; // From verifyToken middleware
+    const { name, email } = req.body;
+    const image = req.file?.filename ? `/uploads/${req.file.filename}` : null;
+
+    console.log("Update Profile Request");
+    console.log("User ID:", userId);
+    console.log("New Data:", { name, email, image });
+
+    // Find user
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found."
+      });
+    }
+
+    // Update fields
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (image) user.image = image;
+
+    await user.save();
+
+    // Return updated user (without password)
+    const updatedUser = await User.findById(userId).select("-password");
+
+    console.log("Profile updated successfully");
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error("Update Profile Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 
 const logout = async(req,res) =>{
     try{
@@ -147,5 +207,6 @@ module.exports = {
     register,
     login,
     logout,
-    getUser
+    getUser,
+    updateProfile
 }

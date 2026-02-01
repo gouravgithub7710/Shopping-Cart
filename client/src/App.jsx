@@ -17,18 +17,28 @@ import Footer from './components/Footer'
 import NotFound from './pages/NotFound'
 import Cancel from './pages/Cancel'
 import Success from './pages/Success'
+import Profile from "./pages/Profile";
+
 
 const App = () => {
   const dispatch = useDispatch()
   const [isDarkMode,setIsDarkMode] = useState(false)
-  const getUser = () => {
-    getUserFromServer().then((data) => {
-      if (data.success) {
-        dispatch(setUser(data.user))
-        dispatch(setCart(data.user.cart))
-      }
-    })
+  
+  
+  const getUser = async () => {
+    const data = await getUserFromServer()
+    
+ 
+    if (!data || !data.success) {
+      dispatch(setUser(null))
+      return
+    }
+    
+    
+    dispatch(setUser(data.user))
+    dispatch(setCart(data.user.cart))
   }
+
   useEffect(() => {
     getUser()
   }, [])
@@ -46,6 +56,9 @@ const App = () => {
         <Route path="/login" element={<Login getUser={getUser} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/success" element={<Success getUser={getUser}/>} />
+
+        <Route path="/profile" element={<Profile />} />
+
         <Route path="/cancel" element={<Cancel />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
