@@ -5,11 +5,9 @@ A full-stack **Shopping Cart application** built using the **MERN Stack** with s
 ---
 ## 🌐 Live URLs
 
-- **Frontend URL:**
-  https://shopping-cart-gourav.vercel.app
+- **Frontend URL:** https://shopping-cart-gourav.vercel.app
 
-- **Backend URL:**  
-  https://shopping-cart-utes.onrender.com
+- **Backend URL:**  https://shopping-cart-utes.onrender.com
 
 ---
 ## 🚀 Tech Stack
